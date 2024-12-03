@@ -21,6 +21,7 @@ function App() {
 
   const [newArticleTitle, setnewArticleTitle] = useState("");
   const [newArticleAuthor, setnewArticleAuthor] = useState("");
+  const [newArticleStatus, setnewArticleStatus] = useState("Draft");
 
   const handleTitleInputChange = (e) => {
     setnewArticleTitle(e.target.value);
@@ -28,12 +29,19 @@ function App() {
   const handleAuthorInputChange = (e) => {
     setnewArticleAuthor(e.target.value);
   };
+  const handleSelectChange = (e) => {
+    setnewArticleStatus(e.target.value);
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const newArticles = [
       ...articles,
-      { title: newArticleTitle, author: newArticleAuthor },
+      {
+        title: newArticleTitle,
+        author: newArticleAuthor,
+        status: newArticleStatus,
+      },
     ];
     setArticles(newArticles);
   };
@@ -47,9 +55,9 @@ function App() {
   return (
     <>
       <div className="container p-5">
-        <h1>Lista articoli</h1>
-        <form onSubmit={handleFormSubmit}>
-          <label for="title-input" className="form-label">
+        <h1 className="mb-4">Aggiungi articoli</h1>
+        <form onSubmit={handleFormSubmit} className="my-3">
+          <label htmlFor="title-input" className="form-label">
             Inserisci il titolo dell'articolo:
           </label>
           <input
@@ -59,7 +67,7 @@ function App() {
             className="form-control my-3"
             type="text"
           />
-          <label for="author-input" className="form-label">
+          <label htmlFor="author-input" className="form-label">
             Inserisci l'autore dell'articolo:
           </label>
           <input
@@ -69,10 +77,23 @@ function App() {
             className="form-control my-3"
             type="text"
           />
-          <button className="btn btn-primary mb-3">Aggiungi</button>
+          <label htmlFor="status-select" className="form-label">
+            Inserisci lo stato dell'articolo:
+          </label>
+          <select
+            onChange={handleSelectChange}
+            value={newArticleStatus}
+            id="status-select"
+            className="form-select my-3"
+          >
+            <option value="Draft">Draft</option>
+            <option value="Published">Published</option>
+          </select>
+          <button className="btn btn-primary my-3">Aggiungi articolo</button>
         </form>
 
         <div className="article-list-container">
+          <h2 className="my-3">Lista articoli:</h2>
           <ul>
             {articles.map(
               (article, index) =>
