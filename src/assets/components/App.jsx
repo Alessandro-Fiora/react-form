@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 function App() {
-  const [newArticleTitle, setnewArticleTitle] = useState("");
   const [articles, setArticles] = useState([
     {
       title: "Titolo articolo 1",
@@ -14,6 +13,8 @@ function App() {
     },
   ]);
 
+  const [newArticleTitle, setnewArticleTitle] = useState("");
+
   const handleFormChange = (e) => {
     setnewArticleTitle(e.target.value);
   };
@@ -21,7 +22,12 @@ function App() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const newArticles = [...articles, { title: newArticleTitle }];
-    console.log("hai aggiunto: " + newArticleTitle);
+    setArticles(newArticles);
+  };
+
+  const handleDeleteButtonClick = (index) => {
+    const newArticles = [...articles];
+    newArticles.splice(index, 1);
     setArticles(newArticles);
   };
 
@@ -42,12 +48,22 @@ function App() {
 
         <div className="article-list-container">
           <ul>
-            {articles.map((article, index) => (
-              <li key={index}>
-                {article.title}
-                <i className="mx-3 fa-solid fa-trash-can"></i>
-              </li>
-            ))}
+            {articles.map(
+              (article, index) =>
+                article.title && (
+                  <li key={index}>
+                    {article.title}
+                    <button
+                      onClick={() => {
+                        handleDeleteButtonClick(index);
+                      }}
+                      className="btn mx-3"
+                    >
+                      <i className="mx-3 fa-solid fa-trash-can"></i>
+                    </button>
+                  </li>
+                )
+            )}
           </ul>
         </div>
       </div>
